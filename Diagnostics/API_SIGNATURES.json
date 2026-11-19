@@ -1,0 +1,23 @@
+{
+  "source": "com.rustltd.h3vr2.apk / IL2CPP global-metadata.dat",
+  "metadataVersion": 39,
+  "verifiedFromMetadataNotRuntime": true,
+  "types": {
+    "itemDefinition": "Footlong.Content.ItemDef",
+    "itemDefinitionBase": "Footlong.Content.ReferencableAsset",
+    "itemSpawnerMetadata": "Footlong.Content.ItemSpawnerDef",
+    "itemsApi": "Footlong.Items"
+  },
+  "spawnOverload": {
+    "declaringType": "Footlong.Items",
+    "method": "SpawnItem",
+    "isStatic": true,
+    "parameters": [
+      "Footlong.Content.ItemDef",
+      "UnityEngine.Vector3",
+      "UnityEngine.Quaternion"
+    ],
+    "returnType": "UnityEngine.GameObject"
+  },
+  "runtimeStatus": "Not yet executed inside H3VR2. Runtime reflection and spawning remain unverified."
+}
