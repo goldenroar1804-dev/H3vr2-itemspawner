@@ -50,3 +50,8 @@ The current source prototype is version 0.3.2. It contains the C# scripts, Lemon
 ## Build setup
 
 A configurable project file and build-reference instructions are now included (`H3VR2ItemSpawner.csproj` and `BUILD_CONFIGURATION.md`). They make local compilation setup easier but do not indicate a successful build or verified loader compatibility.
+
+
+## Compatibility research
+
+See `QUEST_COMPATIBILITY_RESEARCH.md` for the Quest-specific mod-loader status and decision to avoid unverified APK modifications.
