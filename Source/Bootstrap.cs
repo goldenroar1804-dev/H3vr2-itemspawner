@@ -16,7 +16,8 @@ namespace H3VR2ItemSpawner
         public override void OnInitializeMelon()
         {
             LoggerInstance.Msg("Item Spawner prototype 0.3.2 initialized.");
-            LoggerInstance.Warning("Runtime/game compatibility has not been verified.");\n            WristMenuDiscovery.Run(s => LoggerInstance.Msg(s));
+            LoggerInstance.Warning("Runtime/game compatibility has not been verified.");
+            WristMenuDiscovery.Run(s => LoggerInstance.Msg(s));
         }
 
         public override void OnUpdate()
