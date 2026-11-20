@@ -9,6 +9,8 @@ namespace H3VR2ItemSpawner
 
     internal static class SpawnBatchCoordinator
     {
+        private const float BatchSpreadRadius = 0.18f;
+
         internal static int ClampQuantity(int quantity)
         {
             if (quantity <= 1) return 1;
@@ -32,8 +34,13 @@ namespace H3VR2ItemSpawner
             {
                 try
                 {
-                    Vector3 pos = positionResolver(destination);
+                    Vector3 basePos = positionResolver(destination);
                     Quaternion rot = rotationResolver(destination);
+                    // Scatter batches in a small horizontal circle to reduce item overlap.
+                    Vector3 offset = count == 1 ? Vector3.zero :
+                        new Vector3(Mathf.Cos(i * Mathf.PI * 2f / count), 0f,
+                                    Mathf.Sin(i * Mathf.PI * 2f / count)) * BatchSpreadRadius;
+                    Vector3 pos = basePos + rot * offset;
                     if (ReflectionSpawnService.Spawn(itemDef, pos, rot, log) != null) spawned++;
                 }
                 catch (Exception ex) { log?.Invoke("Batch item " + (i + 1) + " failed: " + ex.Message); }
