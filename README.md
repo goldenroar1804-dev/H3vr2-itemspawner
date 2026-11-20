@@ -1,62 +1,50 @@
-# H3VR2 Quest Item Spawner — development tracker
+# H3VR2 Quest Item Spawner — source scaffold
 
-This repository tracks the Quest 3 item-spawner mod prototype. It is **not an installable mod yet**.
+**Status: experimental, source-only. Not compiled, installed, or tested in-game.**
 
-## Current prototype
+This repository is a prototype for an offline-use Quest item-spawner mod. It is deliberately separated into catalog, spawn-adapter, batch, state, and diagnostic components so future work can be tested independently.
 
-The v0.3.2 source package contains:
-- A wrist-mounted Unity UI with item search and category filters.
-- Quantity selection: 1, 5, 10, 25, or 50.
-- Spawn destinations: spawn point, right-hand target, or ground raycast.
-- A runtime catalog adapter for loaded `Footlong.Content.ItemDef` assets.
-- A read-only reflection probe for logging runtime API signatures.
+## Current source inventory
 
-## APK metadata finding
+| Component | Current state |
+|---|---|
+| Loader bootstrap | Experimental MelonLoader entry point; compatibility unverified |
+| Catalog | Reflection-based lookup/filtering scaffold |
+| Spawn adapter | Reflection adapter for a metadata-derived method signature; unverified |
+| Batch coordinator | Quantity clamping, destination-resolver interface, spacing, per-item error isolation |
+| Menu discovery | Read-only reflection diagnostics; does not attach a menu |
+| UI state | Search/category/quantity/destination/recent state; not wired to UI |
+| Static checks | Python source integrity checks; not a compiler or runtime test |
 
-The supplied APK's IL2CPP metadata (version 39) was decoded for this overload:
+## Safety and compatibility gate
 
-```csharp
-Footlong.Items.SpawnItem(
-    Footlong.Content.ItemDef item,
-    UnityEngine.Vector3 position,
-    UnityEngine.Quaternion rotation
-) -> UnityEngine.GameObject
+The exact Quest package/version must have a documented compatible loader before attempting installation. Generic Android/IL2CPP support is not proof of game compatibility. Do not patch, sign, or reinstall the game based solely on this scaffold.
+
+## Build inputs (only once compatibility is verified)
+
+- Compatible loader's assemblies.
+- Game-version-specific Unity/IL2CPP interop references.
+- Matching .NET build tools and target configuration.
+- A backed-up test environment and offline test plan.
+
+See `BUILD_CONFIGURATION.md`, `QUEST_COMPATIBILITY_RESEARCH.md`, and `REMAINING_COMPLETION_GATES.md`.
+
+## Validation
+
+Run the static checker:
+
+```bash
+python3 tools/static_check.py
 ```
 
-This is a **metadata-derived finding**, not a live runtime test. The adapter checks the exact overload before it enables spawning.
+It checks source structure and expected scaffold components. Passing is **not** evidence of C# compilation or in-game behavior.
 
-## Blocking requirements
+## Milestones
 
-1. Confirm a mod loader that works with this exact H3VR2 Quest package and game version.
-2. Obtain that loader's generated IL2CPP/Unity interop assemblies for this exact build.
-3. Compile the C# project against those references.
-4. Test menu attachment, catalog population, and a single spawn in offline play.
-5. Only then package and install the mod.
+1. Confirm loader/package/version compatibility (blocked).
+2. Acquire matching generated interop references (blocked by 1).
+3. Compile and resolve errors (blocked by 1–2).
+4. Validate diagnostic initialization and menu discovery (blocked by 1–3).
+5. Attach an actual UI and test catalog + single spawn (blocked by verified APIs).
+6. Test batches, cleanup, stability, then package (blocked by 1–5).
 
-H3VR2's developer stated that modding was not supported at launch and that a proper framework would take additional work. A Quest-specific supported modding path has not been confirmed. LemonLoader supports Android/IL2CPP in general, but that does not prove compatibility with H3VR2.
-
-## Safety / installation status
-
-- No game APK has been modified or signed.
-- No compiled DLL or installable package is available.
-- Do not patch or reinstall H3VR2 based on this prototype. Back up app data before any future loader experiment.
-- The browser preview is only a UI mockup and does not spawn game items.
-
-## Source package
-
-The current source prototype is version 0.3.2. It contains the C# scripts, LemonLoader bootstrap experiment, project file, API findings, and UI preview. The source must still be compiled and tested against a confirmed loader/runtime before it can be called a working mod.
-
-
-## Build setup
-
-A configurable project file and build-reference instructions are now included (`H3VR2ItemSpawner.csproj` and `BUILD_CONFIGURATION.md`). They make local compilation setup easier but do not indicate a successful build or verified loader compatibility.
-
-
-## Compatibility research
-
-See `QUEST_COMPATIBILITY_RESEARCH.md` for the Quest-specific mod-loader status and decision to avoid unverified APK modifications.
-
-
-## Completion gates
-
-See `REMAINING_COMPLETION_GATES.md` for the required loader, interop, build/runtime validation, and packaging steps. These remain pending.
