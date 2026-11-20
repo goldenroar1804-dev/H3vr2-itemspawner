@@ -45,3 +45,8 @@ H3VR2's developer stated that modding was not supported at launch and that a pro
 ## Source package
 
 The current source prototype is version 0.3.2. It contains the C# scripts, LemonLoader bootstrap experiment, project file, API findings, and UI preview. The source must still be compiled and tested against a confirmed loader/runtime before it can be called a working mod.
+
+
+## Build setup
+
+A configurable project file and build-reference instructions are now included (`H3VR2ItemSpawner.csproj` and `BUILD_CONFIGURATION.md`). They make local compilation setup easier but do not indicate a successful build or verified loader compatibility.
