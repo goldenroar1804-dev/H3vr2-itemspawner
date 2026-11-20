@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AssemblyName>H3VR2ItemSpawner</AssemblyName>
+    <RootNamespace>H3VR2ItemSpawner</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GameManagedDir Condition="'$(GameManagedDir)' == ''">$(H3VR2ManagedDir)</GameManagedDir>
+    <LoaderDir Condition="'$(LoaderDir)' == ''">$(MelonLoaderDir)</LoaderDir>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(GameManagedDir)' != '' and Exists('$(GameManagedDir)/UnityEngine.CoreModule.dll')">
+    <Reference Include="UnityEngine.CoreModule"><HintPath>$(GameManagedDir)/UnityEngine.CoreModule.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(GameManagedDir)' != '' and Exists('$(GameManagedDir)/UnityEngine.dll')">
+    <Reference Include="UnityEngine"><HintPath>$(GameManagedDir)/UnityEngine.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(LoaderDir)' != '' and Exists('$(LoaderDir)/MelonLoader.dll')">
+    <Reference Include="MelonLoader"><HintPath>$(LoaderDir)/MelonLoader.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(GameManagedDir)' != '' and Exists('$(GameManagedDir)/Il2CppInterop.Runtime.dll')">
+    <Reference Include="Il2CppInterop.Runtime"><HintPath>$(GameManagedDir)/Il2CppInterop.Runtime.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(GameManagedDir)' != ''">
+    <Reference Include="Assembly-CSharp"><HintPath>$(GameManagedDir)/Assembly-CSharp.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.PhysicsModule"><HintPath>$(GameManagedDir)/UnityEngine.PhysicsModule.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+</Project>
