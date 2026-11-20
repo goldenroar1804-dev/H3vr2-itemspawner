@@ -55,3 +55,8 @@ A configurable project file and build-reference instructions are now included (`
 ## Compatibility research
 
 See `QUEST_COMPATIBILITY_RESEARCH.md` for the Quest-specific mod-loader status and decision to avoid unverified APK modifications.
+
+
+## Completion gates
+
+See `REMAINING_COMPLETION_GATES.md` for the required loader, interop, build/runtime validation, and packaging steps. These remain pending.
