@@ -1,0 +1,16 @@
+name: Source scaffold checks
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  static-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Check scaffold files and C# brace balance
+        run: python3 tools/static_check.py
