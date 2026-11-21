@@ -48,6 +48,24 @@ def brace_balance(code):
     if state in ("block", "string", "verbatim", "char"): return -999
     return balance
 
+# Regression fixtures exercise lexer states without needing the game assemblies.
+lexer_fixtures = {
+    "plain": "class A { }",
+    "string_braces": 'class A { string s = "{ }"; }',
+    "escaped_quote": 'class A { string s = "\\\\\\\" { }"; }',
+    "char_brace": "class A { char c = '{'; }",
+    "line_comment": "class A { // }\\n }",
+    "block_comment": "class A { /* { } */ }",
+    "verbatim_quote": 'class A { string s = @"{ ""quoted"" }"; }',
+}
+for fixture_name, fixture in lexer_fixtures.items():
+    if brace_balance(fixture) != 0:
+        errors.append("Lexer regression fixture failed: " + fixture_name)
+if brace_balance("class A {") == 0:
+    errors.append("Lexer regression fixture failed: missing closing brace not detected")
+if brace_balance("class A }") >= 0:
+    errors.append("Lexer regression fixture failed: extra closing brace not detected")
+
 for path in SOURCES:
     code=path.read_text(encoding="utf-8")
     rel=str(path.relative_to(ROOT))
