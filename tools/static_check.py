@@ -54,7 +54,7 @@ lexer_fixtures = {
     "string_braces": 'class A { string s = "{ }"; }',
     "escaped_quote": 'class A { string s = "\\\\\\\" { }"; }',
     "char_brace": "class A { char c = '{'; }",
-    "line_comment": "class A { // }\\n }",
+    "line_comment": "class A { // }\n }",
     "block_comment": "class A { /* { } */ }",
     "verbatim_quote": 'class A { string s = @"{ ""quoted"" }"; }',
 }
