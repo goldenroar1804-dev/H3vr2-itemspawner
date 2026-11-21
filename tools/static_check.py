@@ -54,6 +54,7 @@ contracts = {
     "Source/WristMenuDiscovery.cs": ["Run", "CANDIDATE"],
     "Source/CatalogSnapshot.cs": ["Replace", "Categories", "FindByName"],
     "Source/ItemSpawnerController.cs": ["Refresh", "Visible", "SpawnSelected", "Select"],
+    "Source/SpawnPlacement.cs": ["ResolvePosition", "ResolveRotation", "HandForwardDistance", "GroundForwardDistance"],
 }
 for rel, needles in contracts.items():
     path = ROOT / rel
