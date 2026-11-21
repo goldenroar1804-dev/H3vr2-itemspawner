@@ -7,7 +7,7 @@ namespace H3VR2ItemSpawner
 {
     internal static class WristMenuDiscovery
     {
-        private static readonly string[] Keywords = { "BladeMenu", "Wrist", "Cursor", "Interaction", "MenuController", "ItemSpawner" };
+        private static readonly string[] Keywords = { "BladeMenu", "Wrist", "Cursor", "Interaction", "MenuController", "ItemSpawner", "Spawner", "Spawn", "Inventory", "Catalog", "Footlong" };
         private static readonly string[] TargetTypes = { "Footlong.Items", "Footlong.Content.ItemDef", "Footlong.Content.ItemSpawnerDef", "Footlong.Player" };
 
         internal static void Run(Action<string> log)
@@ -30,12 +30,12 @@ namespace H3VR2ItemSpawner
                 {
                     string name = type.FullName ?? type.Name;
                     if (!Keywords.Any(k => name.IndexOf(k, StringComparison.OrdinalIgnoreCase) >= 0)) continue;
-                    if (++candidates > 100) { log("Discovery capped at 100 candidate types."); break; }
+                    if (++candidates > 160) { log("Discovery capped at 160 candidate types."); break; }
                     log("CANDIDATE: " + name);
                     DumpMembers(type, log, ref membersLogged, 800, false);
                 }
             }
-            log("Discovery complete. Candidate types=" + candidates + ", member output=" + membersLogged + ". Diagnostic only.");
+            log("Discovery complete. Candidate types=" + candidates + ", member output=" + membersLogged + ". Diagnostic only.");\n            log("Probe scope: expanded keyword match for inventory/catalog/spawn/menu candidates; no methods invoked.");
         }
 
         private static void DumpMembers(Type type, Action<string> log, ref int total, int cap, bool dumpAll)
