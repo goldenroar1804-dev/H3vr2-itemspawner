@@ -14,3 +14,7 @@ This log records repository changes from the user's November 20, 2026 instructio
 - No spawning, menu patching, or game-data modification is performed by this report feature.
 - Added static-integrity contract coverage for the report writer. Validation remains source-only until CI completes; compile/runtime testing remains blocked by missing game-specific references and loader confirmation.
 
+## 2026-11-20 — Integrity-check correction
+- Corrected a syntax issue in the static checker contract introduced while adding coverage for the diagnostics-report source.
+- The failed check was a checker-script syntax issue, not evidence of a game runtime failure. The corrected commit has a new CI run pending.
+
