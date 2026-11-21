@@ -1,15 +1,12 @@
 # H3VR2 Quest Item Spawner — source prototype
 
-This is an experimental source scaffold, not a compiled or tested game mod.
+Experimental scaffold; not compiled or tested in-game.
 
-## Status
-- Bootstrap assembly version aligned to 0.3.2.
-- Bootstrap logs initialization and checks for the metadata-derived player type.
-- Guarded reflection probe checks the exact metadata-derived SpawnItem signature.
-- Item spawning and wrist UI attachment remain disabled pending confirmed loader/runtime compatibility and interop references.
+- Bootstrap logs initialization and runtime/assembly diagnostics.
+- Guarded runtime probe scans targeted Footlong types and likely menu APIs.
+- Catalog and spawn adapter use reflection against metadata-derived signatures.
+- Batch logic, quantity limits, state, and destination helpers are scaffolded.
 
-## Build prerequisites
-This source requires the target game's matching IL2CPP/Unity interop references and a compatible mod loader. These are intentionally not bundled. It has not been compiled or tested on Quest.
+**No menu registration or spawning is enabled.** The project requires verified loader compatibility and matching game/IL2CPP references before compilation and runtime validation.
 
-## Important
-Do not install this as a DLL yet. The bootstrap is diagnostic-only and is not a functioning item-spawner menu.
+Do not install this as a DLL yet.
