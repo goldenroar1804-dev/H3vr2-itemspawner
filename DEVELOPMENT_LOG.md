@@ -8,3 +8,9 @@ This log records repository changes from the user's November 20, 2026 instructio
 - The current project remains an experimental source scaffold; no compile, install, or in-game verification is claimed.
 - Continuing work is gated on obtaining the exact game/loader/interoperability details and runtime diagnostics where required.
 
+## 2026-11-20 — Runtime report groundwork
+- Added `Source/RuntimeDiagnostics.cs`: collects a capped, non-invasive report of runtime version, Unity version, persistent storage path, loaded assemblies, and focused target-type presence.
+- Bootstrap now records the focused type/menu discovery output into the report and attempts to save it under the Unity persistent-data directory as `H3VR2ItemSpawner-diagnostics.txt`.
+- No spawning, menu patching, or game-data modification is performed by this report feature.
+- Added static-integrity contract coverage for the report writer. Validation remains source-only until CI completes; compile/runtime testing remains blocked by missing game-specific references and loader confirmation.
+
