@@ -48,3 +48,8 @@ It checks source structure and expected scaffold components. Passing is **not** 
 5. Attach an actual UI and test catalog + single spawn (blocked by verified APIs).
 6. Test batches, cleanup, stability, then package (blocked by 1–5).
 
+
+
+## November 20 maintenance update
+
+The source-integrity checker now receives lexical and workflow checks in addition to scaffold contracts. The mod remains diagnostic-only until exact Quest loader compatibility and API references can be verified. No installable artifact is claimed.
