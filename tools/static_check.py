@@ -30,12 +30,12 @@ def brace_balance(code):
             elif ch == "}": balance -= 1
             if balance < 0: return balance
         elif state == "line":
-            if ch == "\\n": state = "code"
+            if ch == "\n": state = "code"
         elif state == "block":
             if ch == "*" and nxt == "/": state = "code"; i += 2; continue
         elif state in ("string", "char"):
             term = '"' if state == "string" else "'"
-            if ch == "\\\\": i += 2; continue
+            if ch == "\\": i += 2; continue
             if ch == term: state = "code"
         i += 1
     return balance
@@ -43,7 +43,7 @@ def brace_balance(code):
 for path in SOURCES:
     code = path.read_text(encoding="utf-8")
     if brace_balance(code) != 0: errors.append("Brace imbalance in " + str(path.relative_to(ROOT)))
-    if "\\x00" in code: errors.append("NUL byte in " + str(path.relative_to(ROOT)))
+    if "\x00" in code: errors.append("NUL byte in " + str(path.relative_to(ROOT)))
 
 contracts = {
     "Source/Bootstrap.cs": ["OnInitializeMelon", "WristMenuDiscovery.Run"],
@@ -69,7 +69,7 @@ except Exception as exc:
     errors.append("Project XML invalid: " + str(exc))
 
 if errors:
-    print("\\n".join("FAIL: " + error for error in errors))
+    print("\n".join("FAIL: " + error for error in errors))
     sys.exit(1)
 print("Source integrity checks passed (" + str(len(SOURCES)) + " C# files).")
 print("Contract and project XML checks passed. Not compilation or runtime validation.")
