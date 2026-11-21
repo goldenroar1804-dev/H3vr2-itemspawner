@@ -32,7 +32,7 @@ def brace_balance(code):
                 balance-=1
                 if balance < 0: return balance
         elif state == "line":
-            if ch == "\\n": state="code"
+            if ch == "\n": state="code"
         elif state == "block":
             if ch == "*" and nxt == "/": state="code"; i+=2; continue
         elif state == "string":
@@ -42,7 +42,7 @@ def brace_balance(code):
             if ch == '"' and nxt == '"': i+=2; continue
             if ch == '"': state="code"
         elif state == "char":
-            if ch == "\\\\": i+=2; continue
+            if ch == "\\": i+=2; continue
             if ch == "'": state="code"
         i+=1
     if state in ("block", "string", "verbatim", "char"): return -999
@@ -52,7 +52,7 @@ for path in SOURCES:
     code=path.read_text(encoding="utf-8")
     rel=str(path.relative_to(ROOT))
     if brace_balance(code)!=0: errors.append("Brace/lexical imbalance in "+rel)
-    if "\\x00" in code: errors.append("NUL byte in "+rel)
+    if "\x00" in code: errors.append("NUL byte in "+rel)
 
 contracts={
 "Source/Bootstrap.cs":["OnInitializeMelon","WristMenuDiscovery.Run"],
