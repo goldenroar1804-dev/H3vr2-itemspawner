@@ -4,7 +4,7 @@ using System;
 using MelonLoader;
 using UnityEngine;
 
-[assembly: MelonInfo(typeof(H3VR2ItemSpawner.Bootstrap), "H3VR2 Item Spawner", "0.3.2", "Project")]
+[assembly: MelonInfo(typeof(H3VR2ItemSpawner.Bootstrap), "H3VR2 Item Spawner", "0.3.3", "Project")]
 [assembly: MelonGame(null, null)]
 
 namespace H3VR2ItemSpawner
