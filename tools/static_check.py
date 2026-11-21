@@ -36,7 +36,7 @@ def brace_balance(code):
         elif state == "block":
             if ch == "*" and nxt == "/": state="code"; i+=2; continue
         elif state == "string":
-            if ch == "\\\\": i+=2; continue
+            if ch == "\\": i+=2; continue
             if ch == '"': state="code"
         elif state == "verbatim":
             if ch == '"' and nxt == '"': i+=2; continue
@@ -103,6 +103,6 @@ if workflow.exists():
         if needle not in wf: errors.append("Static-check workflow missing "+needle)
 
 if errors:
-    print("\\n".join("FAIL: "+e for e in errors)); sys.exit(1)
+    print("\n".join("FAIL: "+e for e in errors)); sys.exit(1)
 print("Integrity checks passed: "+str(len(SOURCES))+" source files, contracts, project XML, status JSON.")
 print("Not a C# compiler, loader compatibility check, or runtime validation.")
