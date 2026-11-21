@@ -1,5 +1,4 @@
-// Reflection diagnostics to locate the game's existing wrist-menu tab and input host.
-// Candidate discovery only; no menu is patched or replaced.
+// Reflection diagnostics: dump narrowly targeted Footlong API signatures, plus likely menu types.
 using System;
 using System.Linq;
 using System.Reflection;
@@ -9,44 +8,62 @@ namespace H3VR2ItemSpawner
     internal static class WristMenuDiscovery
     {
         private static readonly string[] Keywords = { "BladeMenu", "Wrist", "Cursor", "Interaction", "MenuController", "ItemSpawner" };
+        private static readonly string[] TargetTypes = { "Footlong.Items", "Footlong.Content.ItemDef", "Footlong.Content.ItemSpawnerDef", "Footlong.Player" };
+
         internal static void Run(Action<string> log)
         {
             int candidates = 0, membersLogged = 0;
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            foreach (string target in TargetTypes)
+            {
+                Type found = FindType(target);
+                if (found == null) { log("TARGET TYPE MISSING: " + target); continue; }
+                log("TARGET TYPE: " + found.FullName + " [" + found.Assembly.GetName().Name + "]");
+                DumpMembers(found, log, ref membersLogged, 600, true);
+            }
+            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 Type[] types;
                 try { types = assembly.GetTypes(); }
                 catch (ReflectionTypeLoadException ex) { types = ex.Types.Where(t => t != null).ToArray(); }
                 catch { continue; }
-                foreach (var type in types)
+                foreach (Type type in types)
                 {
                     string name = type.FullName ?? type.Name;
                     if (!Keywords.Any(k => name.IndexOf(k, StringComparison.OrdinalIgnoreCase) >= 0)) continue;
-                    if (++candidates > 100) { log("Discovery capped at 100 types."); return; }
+                    if (++candidates > 100) { log("Discovery capped at 100 candidate types."); break; }
                     log("CANDIDATE: " + name);
-                    try {
-                        var members = type.GetMembers(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
-                        foreach (var member in members) {
-                            if (membersLogged >= 500) { log("Member output capped at 500."); return; }
-                            string m = member.Name;
-                            bool relevant = Keywords.Any(k => m.IndexOf(k, StringComparison.OrdinalIgnoreCase) >= 0) ||
-                                m.IndexOf("Tab", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                                m.IndexOf("Button", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                                m.IndexOf("Spawn", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                                m.IndexOf("Open", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                                m.IndexOf("Close", StringComparison.OrdinalIgnoreCase) >= 0;
-                            if (!relevant) continue;
-                            if (member is MethodInfo method) {
-                                string args = string.Join(", ", method.GetParameters().Select(p => p.ParameterType.Name + " " + p.Name));
-                                log("  METHOD: " + method.ReturnType.Name + " " + m + "(" + args + ")");
-                            } else if (member is PropertyInfo prop) log("  PROPERTY: " + prop.PropertyType.Name + " " + m);
-                            else if (member is FieldInfo field) log("  FIELD: " + field.FieldType.Name + " " + m);
-                            membersLogged++;
-                        }
-                    } catch { }
+                    DumpMembers(type, log, ref membersLogged, 800, false);
                 }
             }
-            log("Discovery complete. Types=" + candidates + ", relevant members=" + membersLogged + ". This output is diagnostic, not proof of hook compatibility.");
+            log("Discovery complete. Candidate types=" + candidates + ", member output=" + membersLogged + ". Diagnostic only.");
+        }
+
+        private static void DumpMembers(Type type, Action<string> log, ref int total, int cap, bool dumpAll)
+        {
+            try {
+                var members = type.GetMembers(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
+                foreach (MemberInfo member in members) {
+                    if (total >= cap) { log("Member output capped."); return; }
+                    string n = member.Name;
+                    bool relevant = dumpAll || Keywords.Any(k => n.IndexOf(k, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                        new[] { "Tab", "Button", "Spawn", "Open", "Close", "Item", "Category", "Name", "Prefab", "Asset", "Hand" }
+                        .Any(k => n.IndexOf(k, StringComparison.OrdinalIgnoreCase) >= 0);
+                    if (!relevant) continue;
+                    if (member is MethodInfo m) {
+                        string args = string.Join(", ", m.GetParameters().Select(p => p.ParameterType.FullName + " " + p.Name));
+                        log("  METHOD: " + m.ReturnType.FullName + " " + n + "(" + args + ")");
+                    } else if (member is PropertyInfo p) log("  PROPERTY: " + p.PropertyType.FullName + " " + n);
+                    else if (member is FieldInfo f) log("  FIELD: " + f.FieldType.FullName + " " + n);
+                    total++;
+                }
+            } catch (Exception ex) { log("Member scan failed: " + ex.Message); }
+        }
+
+        private static Type FindType(string fullName)
+        {
+            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+                try { Type t = assembly.GetType(fullName, false); if (t != null) return t; } catch { }
+            return null;
         }
     }
 }
