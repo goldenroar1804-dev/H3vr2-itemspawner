@@ -18,3 +18,7 @@ This log records repository changes from the user's November 20, 2026 instructio
 - Corrected a syntax issue in the static checker contract introduced while adding coverage for the diagnostics-report source.
 - The failed check was a checker-script syntax issue, not evidence of a game runtime failure. The corrected commit has a new CI run pending.
 
+
+## 2026-11-20 — Static checker contract repair
+- Repaired malformed contract dictionary entry for `RuntimeDiagnostics.cs` that caused the static-check workflow to fail parsing.
+- This fix is for the source-integrity checker only; it does not establish game compilation or runtime compatibility.
