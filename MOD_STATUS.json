@@ -1,6 +1,6 @@
 {
   "name": "H3VR2 Quest Item Spawner Prototype",
-  "version": "0.3.3-source",
+  "version": "0.3.4-source",
   "status": "experimental-source-only",
   "verified": false,
   "target": "Quest H3VR2 (compatibility unconfirmed)",
@@ -16,5 +16,5 @@
     "installable_package": false
   },
   "last_update": "2026-11-20",
-  "notice": "Do not install this source scaffold as a mod. Requires verified loader and matching interop assemblies."
+  "notice": "Experimental source scaffold only; not compiled, installed, or runtime-verified. Requires verified loader and matching interop assemblies."
 }
