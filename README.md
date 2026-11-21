@@ -2,54 +2,40 @@
 
 **Status: experimental, source-only. Not compiled, installed, or tested in-game.**
 
-This repository is a prototype for an offline-use Quest item-spawner mod. It is deliberately separated into catalog, spawn-adapter, batch, state, and diagnostic components so future work can be tested independently.
+This prototype separates catalog discovery, spawn-adapter reflection, batch/state logic, placement helpers, and runtime diagnostics.
 
-## Current source inventory
+## Components
+- Loader bootstrap and guarded initialization diagnostics (loader compatibility unverified).
+- Reflection catalog discovery and search/filter state.
+- Metadata-derived spawn adapter and API signature probe.
+- Batch quantity limits, grouped placement, and per-item error isolation.
+- Read-only menu/API discovery; no actual menu patching.
+- Python source integrity checks (not compilation/runtime tests).
 
-| Component | Current state |
-|---|---|
-| Loader bootstrap | Experimental MelonLoader entry point; compatibility unverified |
-| Catalog | Reflection-based lookup/filtering scaffold |
-| Spawn adapter | Reflection adapter for a metadata-derived method signature; unverified |
-| Batch coordinator | Quantity clamping, destination-resolver interface, spacing, per-item error isolation |
-| Menu discovery | Read-only reflection diagnostics; does not attach a menu |
-| UI state | Search/category/quantity/destination/recent state; not wired to UI |
-| Static checks | Python source integrity checks; not a compiler or runtime test |
+## Latest development
+Runtime diagnostics now specifically enumerate the metadata-derived `Footlong.Items`, `Footlong.Content.ItemDef`, `Footlong.Content.ItemSpawnerDef`, and `Footlong.Player` signatures and fields, where discoverable. They also scan likely menu-related types. Output is capped and guarded to reduce crash risk. The results still must be captured from the exact live game runtime to confirm signatures and compatibility.
 
-## Safety and compatibility gate
+## Compatibility gate
+The target Quest package/version must have a documented compatible loader. Generic Android/IL2CPP support is not proof of compatibility. Do not install, patch, or sign the game based solely on this scaffold.
 
-The exact Quest package/version must have a documented compatible loader before attempting installation. Generic Android/IL2CPP support is not proof of game compatibility. Do not patch, sign, or reinstall the game based solely on this scaffold.
-
-## Build inputs (only once compatibility is verified)
-
-- Compatible loader's assemblies.
+## Build prerequisites after compatibility is verified
+- Compatible loader assemblies.
 - Game-version-specific Unity/IL2CPP interop references.
-- Matching .NET build tools and target configuration.
-- A backed-up test environment and offline test plan.
+- Matching build tools and target configuration.
+- Backed-up test environment and offline test plan.
 
-See `BUILD_CONFIGURATION.md`, `QUEST_COMPATIBILITY_RESEARCH.md`, and `REMAINING_COMPLETION_GATES.md`.
+See `BUILD_CONFIGURATION.md`, `QUEST_COMPATIBILITY_RESEARCH.md`, `REMAINING_COMPLETION_GATES.md`, and `FINAL_INTEGRATION_INPUT.md`.
 
 ## Validation
-
-Run the static checker:
-
-```bash
-python3 tools/static_check.py
-```
-
-It checks source structure and expected scaffold components. Passing is **not** evidence of C# compilation or in-game behavior.
+Run `python3 tools/static_check.py`. Passing means only source integrity checks passed; it does not prove compilation or runtime behavior.
 
 ## Milestones
+1. Confirm loader/package/version compatibility.
+2. Acquire matching generated interop references.
+3. Compile and resolve errors.
+4. Validate diagnostic initialization and runtime probe.
+5. Implement menu hookup against verified APIs.
+6. Validate catalog and single spawn; then batches, cleanup, stability, and packaging.
 
-1. Confirm loader/package/version compatibility (blocked).
-2. Acquire matching generated interop references (blocked by 1).
-3. Compile and resolve errors (blocked by 1–2).
-4. Validate diagnostic initialization and menu discovery (blocked by 1–3).
-5. Attach an actual UI and test catalog + single spawn (blocked by verified APIs).
-6. Test batches, cleanup, stability, then package (blocked by 1–5).
-
-
-
-## November 20 maintenance update
-
-The source-integrity checker now receives lexical and workflow checks in addition to scaffold contracts. The mod remains diagnostic-only until exact Quest loader compatibility and API references can be verified. No installable artifact is claimed.
+## November 20 update
+Expanded the read-only runtime probe to log targeted Footlong signatures plus likely menu APIs. This is diagnostic groundwork, not an installable mod.
