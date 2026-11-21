@@ -22,3 +22,7 @@ This log records repository changes from the user's November 20, 2026 instructio
 ## 2026-11-20 — Static checker contract repair
 - Repaired malformed contract dictionary entry for `RuntimeDiagnostics.cs` that caused the static-check workflow to fail parsing.
 - This fix is for the source-integrity checker only; it does not establish game compilation or runtime compatibility.
+
+## 2026-11-20 — Expanded API discovery scope
+- Expanded the diagnostic type-name scan to include likely inventory, catalog, spawner, spawn, and Footlong-related types, with an increased hard cap of 160 candidate types.
+- Updated source integrity checks for the expanded scan cap. Diagnostics remain non-invoking and do not register UI or spawn objects.
