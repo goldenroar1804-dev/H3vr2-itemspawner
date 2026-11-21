@@ -39,3 +39,7 @@ Run `python3 tools/static_check.py`. Passing means only source integrity checks 
 
 ## November 20 update
 Expanded the read-only runtime probe to log targeted Footlong signatures plus likely menu APIs. This is diagnostic groundwork, not an installable mod.
+
+## Update tracking
+
+Repository changes are recorded in [`DEVELOPMENT_LOG.md`](DEVELOPMENT_LOG.md). This log records development work and validation results; it does not imply that the scaffold has been compiled or tested in-game.
