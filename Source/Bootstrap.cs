@@ -4,7 +4,7 @@ using System;
 using MelonLoader;
 using UnityEngine;
 
-[assembly: MelonInfo(typeof(H3VR2ItemSpawner.Bootstrap), "H3VR2 Item Spawner", "0.3.3", "Project")]
+[assembly: MelonInfo(typeof(H3VR2ItemSpawner.Bootstrap), "H3VR2 Item Spawner", "0.3.4", "Project")]
 [assembly: MelonGame(null, null)]
 
 namespace H3VR2ItemSpawner
@@ -15,13 +15,24 @@ namespace H3VR2ItemSpawner
 
         public override void OnInitializeMelon()
         {
-            LoggerInstance.Msg("Item Spawner prototype 0.3.3 initialized.");
+            LoggerInstance.Msg("Item Spawner prototype 0.3.4 initialized.");
             LoggerInstance.Msg("Runtime: " + Environment.Version + "; loaded assemblies: " + AppDomain.CurrentDomain.GetAssemblies().Length);
             LoggerInstance.Warning("Runtime/game compatibility has not been verified. Diagnostic mode only.");
             try { LoggerInstance.Msg("Unity probe: " + typeof(UnityEngine.Object).Assembly.FullName); }
             catch (Exception ex) { LoggerInstance.Warning("Unity assembly probe: " + ex.Message); }
-            try { WristMenuDiscovery.Run(s => LoggerInstance.Msg(s)); }
-            catch (Exception ex) { LoggerInstance.Error("Type discovery stopped: " + ex); }
+            try
+            {
+                RuntimeDiagnostics.Run(s => LoggerInstance.Msg(s));
+                WristMenuDiscovery.Run(RuntimeDiagnostics.Record);
+                RuntimeDiagnostics.Finish();
+                LoggerInstance.Msg("Diagnostic report saved: " + RuntimeDiagnostics.ReportPath);
+            }
+            catch (Exception ex)
+            {
+                LoggerInstance.Error("Diagnostic report failed: " + ex);
+                RuntimeDiagnostics.Record("FATAL DIAGNOSTIC ERROR: " + ex);
+                RuntimeDiagnostics.Finish();
+            }
         }
 
         public override void OnUpdate()
