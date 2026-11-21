@@ -96,7 +96,7 @@ for rel, needles in contracts.items():
 probe=ROOT/"Source/WristMenuDiscovery.cs"
 if probe.exists():
     code=probe.read_text(encoding="utf-8")
-    for needle in ("candidates > 100", "membersLogged", "ReflectionTypeLoadException",
+    for needle in ("candidates > 160", "membersLogged", "ReflectionTypeLoadException",
                    "Footlong.Items", "Footlong.Content.ItemDef"):
         if needle not in code: errors.append("Diagnostic safeguard/target missing: "+needle)
 spawn=ROOT/"Source/ReflectionSpawnService.cs"
