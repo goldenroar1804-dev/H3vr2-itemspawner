@@ -81,7 +81,7 @@ contracts={
 "Source/WristMenuDiscovery.cs":["Run","CANDIDATE"],
 "Source/CatalogSnapshot.cs":["Replace","Categories","FindByName"],
 "Source/ItemSpawnerController.cs":["Refresh","Visible","SpawnSelected","Select"],
-"Source/SpawnPlacement.cs":["ResolvePosition","ResolveRotation","HandForwardDistance","GroundForwardDistance"]}
+"Source/SpawnPlacement.cs":["ResolvePosition","ResolveRotation","HandForwardDistance","GroundForwardDistance"],\n"Source/RuntimeDiagnostics.cs":["MaxReportChars","persistentDataPath","File.WriteAllText","Focused type lookup"]}
 for rel, needles in contracts.items():
     p=ROOT/rel
     if not p.exists(): errors.append("Contract file missing: "+rel); continue
