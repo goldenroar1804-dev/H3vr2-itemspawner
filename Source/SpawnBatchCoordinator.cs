@@ -9,15 +9,15 @@ namespace H3VR2ItemSpawner
 
     internal static class SpawnBatchCoordinator
     {
-        private const float BatchSpreadRadius = 0.18f;
+        private const float BatchSpreadRadius = 0.24f;
+        private const int MaximumBatchSize = 50;
 
+        // UI presets only; invalid values fall back to a single spawn.
         internal static int ClampQuantity(int quantity)
         {
-            if (quantity <= 1) return 1;
-            if (quantity <= 5) return 5;
-            if (quantity <= 10) return 10;
-            if (quantity <= 25) return 25;
-            return 50;
+            if (quantity == 5 || quantity == 10 || quantity == 25 || quantity == 50)
+                return Math.Min(quantity, MaximumBatchSize);
+            return 1;
         }
 
         internal static int SpawnBatch(object itemDef, int requestedQuantity,
@@ -28,18 +28,28 @@ namespace H3VR2ItemSpawner
             if (positionResolver == null || rotationResolver == null) {
                 log?.Invoke("Batch spawn cancelled: destination resolver unavailable."); return 0;
             }
+
             int count = ClampQuantity(requestedQuantity);
             int spawned = 0;
+            Vector3 basePos;
+            Quaternion rot;
+            try {
+                // Resolve once so the batch remains grouped even if the hand/player moves.
+                basePos = positionResolver(destination);
+                rot = rotationResolver(destination);
+            } catch (Exception ex) {
+                log?.Invoke("Batch spawn cancelled: destination resolution failed: " + ex.Message);
+                return 0;
+            }
+
             for (int i = 0; i < count; i++)
             {
                 try
                 {
-                    Vector3 basePos = positionResolver(destination);
-                    Quaternion rot = rotationResolver(destination);
-                    // Scatter batches in a small horizontal circle to reduce item overlap.
+                    // Compact, evenly spaced circle around the resolved destination.
+                    float angle = (Mathf.PI * 2f * i) / count;
                     Vector3 offset = count == 1 ? Vector3.zero :
-                        new Vector3(Mathf.Cos(i * Mathf.PI * 2f / count), 0f,
-                                    Mathf.Sin(i * Mathf.PI * 2f / count)) * BatchSpreadRadius;
+                        new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)) * BatchSpreadRadius;
                     Vector3 pos = basePos + rot * offset;
                     if (ReflectionSpawnService.Spawn(itemDef, pos, rot, log) != null) spawned++;
                 }
