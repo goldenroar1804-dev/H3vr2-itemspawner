@@ -13,7 +13,7 @@ This prototype separates catalog discovery, spawn-adapter reflection, batch/stat
 - Python source integrity checks (not compilation/runtime tests).
 
 ## Latest development
-Runtime diagnostics now specifically enumerate the metadata-derived `Footlong.Items`, `Footlong.Content.ItemDef`, `Footlong.Content.ItemSpawnerDef`, and `Footlong.Player` signatures and fields, where discoverable. They also scan likely menu-related types. Output is capped and guarded to reduce crash risk. The results still must be captured from the exact live game runtime to confirm signatures and compatibility.
+Runtime diagnostics now specifically enumerate the metadata-derived `Footlong.Items`, `Footlong.Content.ItemDef`, `Footlong.Content.ItemSpawnerDef`, and `Footlong.Player` signatures and fields, where discoverable. They also scan likely menu-related types. Output is capped and guarded to reduce crash risk. Startup diagnostics are also written to a text report in the Unity persistent-data directory (path printed in the loader log), for later review. The results still must be captured from the exact live game runtime to confirm signatures and compatibility.
 
 ## Compatibility gate
 The target Quest package/version must have a documented compatible loader. Generic Android/IL2CPP support is not proof of compatibility. Do not install, patch, or sign the game based solely on this scaffold.
